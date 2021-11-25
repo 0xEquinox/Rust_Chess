@@ -1,20 +1,14 @@
 use std::borrow::Borrow;
 use crate::piece::{Piece, Type, Color};
-use std::collections::HashMap;
-use std::collections::hash_map::RandomState;
 
 
-#[derive(Debug)]
+#[derive(Debug, Copy, Clone)]
 pub(crate) struct Board {
 
     board: [[Piece; 8]; 8],
     turn: bool,
-    white_king_moved: bool,
-    black_king_moved: bool,
-    white_queen_rook_moved: bool,
-    black_queen_rook_moved: bool,
-    white_king_rook_moved: bool,
-    black_king_rook_moved: bool,
+    can_castle_kingside: bool,
+    can_castle_queenside: bool,
     is_game_over: bool,
 }
 
@@ -34,89 +28,13 @@ impl Board{
                           [Piece::new(0, 7, Color::Black, Type::Rook), Piece::new(1, 7, Color::Black, Type::Knight), Piece::new(2, 7, Color::Black, Type::Bishop), Piece::new(4, 7, Color::Black, Type::Queen), Piece::new(5, 7, Color::Black, Type::King), Piece::new(6, 7, Color::Black, Type::Bishop), Piece::new(7, 7, Color::Black, Type::Knight), Piece::new(8, 7, Color::Black, Type::Rook)]
             ],
             turn: true,
-            white_king_moved: false,
-            black_king_moved: false,
-            white_queen_rook_moved: false,
-            black_queen_rook_moved: false,
-            white_king_rook_moved: false,
-            black_king_rook_moved: false,
+            can_castle_kingside: false,
+            can_castle_queenside: false,
             is_game_over: false
         }
 
     }
 
-    pub fn get_board(&self) -> &[[Piece; 8]; 8]{
-        self.board.borrow()
-    }
-
-    pub fn get_turn(&self) -> bool{
-        self.turn
-    }
-
-
-    pub fn get_white_king_moved(&self) -> bool{
-        self.white_king_moved
-    }
-
-    pub fn get_black_king_moved(&self) -> bool{
-        self.black_king_moved
-    }
-
-    pub fn get_white_queen_rook_moved(&self) -> bool{
-        self.white_queen_rook_moved
-    }
-
-    pub fn get_black_queen_rook_moved(&self) -> bool{
-        self.black_queen_rook_moved
-    }
-
-    pub fn get_white_king_rook_moved(&self) -> bool{
-        self.white_king_rook_moved
-    }
-
-    pub fn get_black_king_rook_moved(&self) -> bool{
-        self.black_king_rook_moved
-    }
-
-    pub fn set_white_king_moved(&mut self, moved: bool){
-        self.white_king_moved = moved;
-    }
-
-    pub fn set_black_king_moved(&mut self, moved: bool){
-        self.black_king_moved = moved;
-    }
-
-    pub fn set_white_queen_rook_moved(&mut self, moved: bool){
-        self.white_queen_rook_moved = moved;
-    }
-
-    pub fn set_black_queen_rook_moved(&mut self, moved: bool){
-        self.black_queen_rook_moved = moved;
-    }
-
-    pub fn set_white_king_rook_moved(&mut self, moved: bool){
-        self.white_king_rook_moved = moved;
-    }
-
-    pub fn set_black_king_rook_moved(&mut self, moved: bool){
-        self.black_king_rook_moved = moved;
-    }
-
-    pub fn set_turn(&mut self, turn: bool){
-        self.turn = turn;
-    }
-
-    pub fn set_board(&mut self, board: [[Piece; 8]; 8]){
-        self.board = board;
-    }
-
-    pub fn get_piece(&self, x: usize, y: usize) -> Piece{
-        return self.board[y][x].clone();
-    }
-
-    pub fn set_piece(&mut self, x: usize, y: usize, piece: Piece) {
-        self.board[y][x] = piece;
-    }
 
     //check the turn and print the board on the side that the turn is on
     pub fn print_board(&mut self){
@@ -171,5 +89,31 @@ impl Board{
     pub fn is_game_over(&self) -> bool{
         return self.is_game_over;
     }
+
+}
+
+
+//Getters and Setters
+impl Board {
+
+    fn can_castle_kingside(&self) -> &bool{ &self.can_castle_kingside }
+
+    fn can_castle_queenside(&self) -> &bool{ &self.can_castle_queenside }
+
+    fn can_castle_kingside_mut(&mut self) -> &mut bool{ &mut self.can_castle_kingside }
+
+    fn can_castle_queenside_mut(&mut self) -> &mut bool{ &mut self.can_castle_queenside }
+
+    pub fn board(&self) -> &[[Piece; 8]; 8]{ &self.board }
+
+    pub fn turn(&self) -> &bool{ &self.turn }
+
+    pub fn turn_mut(&mut self) -> &mut bool{ &mut self.turn }
+
+    pub fn board_mut(&mut self) -> &mut [[Piece; 8]; 8]{ &mut self.board }
+
+    pub fn piece_at(&self, x: usize, y: usize) -> &Piece{ &self.board[y][x] }
+
+    pub fn piece_at_mut(&mut self, x: usize, y: usize) -> &mut Piece{ &mut self.board[y][x] }
 
 }

@@ -1,11 +1,11 @@
-#[derive(Debug, PartialEq, Clone, Copy)]
+#[derive(Debug, Copy, Clone, Eq, PartialEq)]
 pub enum Color {
     White,
     Black,
     None,
 }
 
-#[derive(Debug, PartialEq, Clone)]
+#[derive(Debug, PartialEq, Copy, Clone)]
 pub enum Type{
     King,
     Queen,
@@ -16,7 +16,7 @@ pub enum Type{
     Empty,
 }
 
-#[derive(Debug, PartialEq, Clone)]
+#[derive(Debug, Copy, Clone)]
 pub struct Piece {
 
     x: i32,
@@ -37,8 +37,8 @@ impl Piece{
         }
     }
 
-    pub fn get_pos(&self) -> Vec<i32>{
-        vec![self.x, self.y]
+    pub fn get_pos(&self) -> [i32; 2] {
+        [self.x, self.y]
     }
 
     pub fn set_pos(&mut self, x: i32, y: i32){
